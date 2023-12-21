@@ -40,37 +40,43 @@ class DefDensityClass(StrEnum):
   
     
 # Concrete Elastic Modulus Class enumerations
-class DefERatioType(StrEnum):
-    # _E_user_defined = {True: 'USER_E_RATIO',
-    #                  False: 'CODE_E_RATIO'}
-    CODE_E_RATIO = 'CODE_E_RATIO'
-    USER_E_RATIO = 'USER_E_RATIO'
+# class DefERatioType(StrEnum):
+#     # _E_user_defined = {True: 'USER_E_RATIO',
+#     #                  False: 'CODE_E_RATIO'}
+#     CODE_E_RATIO = 'CODE_E_RATIO'
+#     USER_E_RATIO = 'USER_E_RATIO'
     
 
-# Concrete Shrinkage Strain Class enumerations
-class DefShrinkType(StrEnum):
-    CODE_STRAIN = 'CODE_STRAIN'
-    USER_STRAIN = 'USER_STRAIN'
+# # Concrete Shrinkage Strain Class enumerations
+# class DefShrinkType(StrEnum):
+#     CODE_STRAIN = 'CODE_STRAIN'
+#     USER_STRAIN = 'USER_STRAIN'
 
 
 class SlabConcreteMaterial():
+    _e_user_defined = {True: 'USER_E_RATIO',
+                     False: 'CODE_E_RATIO'}
     
+    _strain_user_defined = {True: 'USER_E_RATIO',
+                     False: 'CODE_E_RATIO'}
     
     def __init__(self,
                  member_name,
-                 grade: DefGrade,
-                 type: DefType,
-                 density_type: DefDensityType,
-                 density: float,
-                 density_class: DefDensityClass,
-                 percent: float,
-                 e_ratio_type: DefERatioType,
-                 e_ratio_short: float,
-                 e_ratio_long: float,
-                 e_ratio_vib: float,
-                 e_ratio_shrink: float,
-                 shrink_type: DefShrinkType,
-                 shrink_strain: float,
+                 is_e_user_defined: bool = False,
+                 is_strain_user_defined: bool = False,
+                 grade: DefGrade, #
+                 type: DefType, #
+                 density_type: DefDensityType, #
+                 density: float, #
+                 density_class: DefDensityClass, #
+                 percent: float = 0.33,
+                 e_ratio_type: float = 0.0,
+                 e_ratio_short: float = 0.0,
+                 e_ratio_long: float = 0.0,
+                 e_ratio_vib: float = 0.0,
+                 e_ratio_shrink: float = 0.0,
+                 shrink_type: float = 0.0,
+                 shrink_strain: float = 0.0,
                  ):
         self.member_name = member_name
         self.grade = grade
@@ -79,13 +85,25 @@ class SlabConcreteMaterial():
         self.density = density
         self.density_class = density_class
         self.percent = percent
-        self.e_ratio_type = e_ratio_type
-        self.e_ratio_short = e_ratio_short
-        self.e_ratio_long = e_ratio_long
-        self.e_ratio_vibe = e_ratio_vib
-        self.e_ratio_shrink = e_ratio_shrink
-        self.shrink_type = shrink_type
-        self.shrink_strain = shrink_strain
+        if is_e_user_defined:
+            self.e_ratio_type = e_ratio_type
+            self.e_ratio_short = e_ratio_short
+            self.e_ratio_long = e_ratio_long
+            self.e_ratio_vibe = e_ratio_vib
+            self.e_ratio_shrink = e_ratio_shrink
+        else:
+            self.e_ratio_type = ''
+            self.e_ratio_short = ''
+            self.e_ratio_long = ''
+            self.e_ratio_vibe = ''
+            self.e_ratio_shrink = ''
+        if is_strain_user_defined:
+            self.shrink_type = shrink_type
+            self.shrink_strain = shrink_strain
+        else:
+            self.shrink_type = ''
+            self.shrink_strain = ''
+            
         
         
     def __repr__(self) -> str:
